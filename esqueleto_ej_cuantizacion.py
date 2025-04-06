@@ -22,7 +22,7 @@ N = 1000 # cantidad de muestras
 # Datos del ADC
 B =  8# bits
 Vf = 2# rango simétrico de +/- Vf Volts
-vref = np.sqrt(2)
+vref = 1/np.sqrt(2)
 q = (vref)/(2**(B-1))# paso de cuantización de q Volts
 particiones = 2**B
 
