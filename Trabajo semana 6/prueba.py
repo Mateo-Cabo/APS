@@ -17,43 +17,38 @@ fs = 1000
 
 w = 2*np.pi * fs
 
-omega = np.arange(0, 2*np.pi, np.pi/1000)
+omega = np.arange(0, 2*np.pi, np.pi/4000)
 
 arg = omega  * 1j
 
 z = np.exp(arg)
 
-H = z**-4 + z**-3 + z**-2 + z**-1 + z**0
+H = z**0 + z**-1 + z**-2 + z**-3 + z**-4
+H_mod = abs(H)
+#H = (z**(3/2))*(z**(-3/2) + z**(-1/2) + z**(1/2) + z**(3/2))/(z**3)
+#H = z**(-3/2)*(2*np.cos(3/2*omega) + 2*np.cos(1/2*omega))
 
-a = 250
-b = 500
-tolera = 1.01
+ceros = []
+for x in range(len(H_mod)):
+    if H_mod[x] < 0.000001:
+        ceros.append(x)
 
-tramo = b-a
-while not(tramo<tolera):
-    c = (a+b)//2
-    fa = H.real[a]
-    fb = H.real[b]
-    fc = H.real[c]
-    cambia = fa*fc
-    if cambia < 0: 
-        a = a
-        b = c
-    if cambia > 0:
-        a = c
-        b = b
-    tramo = b-a
+modulo = np.abs(H)
 
-#500
-#
-#
+fase = np.angle(H)
 
 plt.figure()
-plt.plot(abs(H.real))
-plt.plot(H.real)
+plt.plot(omega,abs(H))
+plt.axvline(x=np.pi)
 plt.show
 
 plt.figure()
 plt.plot(np.cos(omega), np.sin(omega))
-plt.plot(np.cos(((c-1))*np.pi/1000), np.sin(((c-1))*np.pi/1000), marker = 'o')
+for x in ceros:
+    plt.plot(np.cos(x*np.pi/4000), np.sin(x*np.pi/4000), marker = 'o')
+plt.show
+
+plt.figure()
+plt.plot(omega, fase)
+plt.axvline(x=np.pi)
 plt.show
